@@ -2,6 +2,28 @@
 
 This project focuses on leveraging machine learning techniques to predict the occurrence of liver disease based on patient data. The dataset used in this project contains information about various attributes such as age, gender, and medical indicators related to liver health.
 
+Here's an explanation for each of the independent variable :
+
+1. **Age**: Refers to the chronological age of an individual, typically measured in years.
+  
+2. **Gender**: Denotes the classification of individuals based on their biological sex, typically categorized as male or female.
+
+3. **Total_Bilirubin**: Total amount of bilirubin present in the blood, measured in micromoles per liter (µmol/L) or milligrams per deciliter (mg/dL).
+
+4. **Direct_Bilirubin**: Also known as conjugated bilirubin, it represents the fraction of bilirubin that is direct or conjugated with glucuronic acid, measured in µmol/L or mg/dL.
+
+5. **Alkaline_Phosphatase**: An enzyme primarily found in the liver, bones, and bile ducts, used as a marker for liver and bone disorders, measured in international units per liter (IU/L).
+
+6. **Alamine_Aminotransferase**: Also known as alanine transaminase (ALT), it is an enzyme found primarily in the liver, used as a marker for liver health, measured in IU/L.
+
+7. **Aspartate_Aminotransferase**: Also known as aspartate transaminase (AST), it is an enzyme found in various tissues, including the liver, heart, and muscles, measured in IU/L.
+
+8. **Total_Protiens**: The total concentration of proteins in the blood, including albumin and globulin, measured in g/dL.
+
+9. **Albumin**: The main protein synthesized by the liver, responsible for maintaining oncotic pressure and transporting various substances in the blood, measured in g/dL.
+
+10. **Albumin_and_Globulin_Ratio**: The ratio of albumin to globulin in the blood, providing insight into liver and kidney function, with a normal range typically between 0.8 to 2.0.
+
 **Data Exploration and Preprocessing:**
 - The dataset is loaded and thoroughly explored using pandas and visualization libraries like seaborn and matplotlib.
 - Initial data exploration includes checking the shape, information, and summary statistics of the dataset.
