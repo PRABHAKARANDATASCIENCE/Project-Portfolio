@@ -3,7 +3,7 @@ TBLPROPERTIES (
   'delta.columnMapping.mode' = 'name'
 )
 AS SELECT * FROM STREAM read_files(
-  "/Volumes/sdp_investment/bronze/raw_data/", :param_1
+  "/Volumes/sdp_investment/bronze/raw_data/",
   format => "csv",
   header => true,
   inferSchema => true
