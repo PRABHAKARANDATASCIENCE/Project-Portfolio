@@ -1,4 +1,4 @@
-CREATE OR REFRESH STREAMING TABLE holding_silver_sdp
+CREATE OR REFRESH STREAMING TABLE sdp_investment.silver.holding_silver_sdp
 AS
 SELECT 
   UPPER(TRIM(Instrument)) AS instrument,
@@ -16,7 +16,7 @@ SELECT
   else "EQUITY"
   end as asset_class,
   current_timestamp() AS silver_table_time_stamp
-FROM STREAM holding_raw_sdp
+FROM STREAM sdp_investment.bronze.holding_raw_sdp
 WHERE Instrument is not null and cast(`Avg. cost` as decimal) is not null
 and cast(`Cur. val` as decimal) > 0 and cast(`Net chg.` as decimal) is not null
 and cast(Invested as decimal) > 0;

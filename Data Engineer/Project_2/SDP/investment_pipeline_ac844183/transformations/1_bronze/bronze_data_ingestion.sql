@@ -1,4 +1,4 @@
-CREATE OR REFRESH STREAMING TABLE holding_raw_sdp
+CREATE OR REFRESH STREAMING TABLE sdp_investment.bronze.holding_raw_sdp
 TBLPROPERTIES (
   'delta.columnMapping.mode' = 'name'
 )
