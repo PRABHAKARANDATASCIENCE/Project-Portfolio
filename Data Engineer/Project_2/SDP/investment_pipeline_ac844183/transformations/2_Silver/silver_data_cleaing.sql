@@ -10,6 +10,11 @@ SELECT
   CAST(`P&L` AS decimal) AS p_and_l,
   CAST(`Net chg.` AS decimal) AS net_chg,
   CAST(`Day chg.` AS decimal) AS day_chg,
+  case 
+  when lower(Instrument) rlike "(bond|sgb|sgl|mml|nfl|kfl)" then "BOND"
+  when lower(Instrument) rlike "(etf|bees|mon100)" then "ETF"
+  else "EQUITY"
+  end as asset_class,
   current_timestamp() AS silver_table_time_stamp
 FROM STREAM holding_raw_sdp
 WHERE Instrument is not null and cast(`Avg. cost` as decimal) is not null
