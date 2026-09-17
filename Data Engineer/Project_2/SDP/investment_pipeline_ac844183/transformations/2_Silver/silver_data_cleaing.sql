@@ -1,5 +1,7 @@
-CREATE OR REFRESH STREAMING TABLE sdp_investment.silver.holding_silver_sdp
-AS
+CREATE OR REFRESH STREAMING TABLE sdp_investment.silver.holding_silver_sdp;
+
+APPLY CHANGES INTO sdp_investment.silver.holding_silver_sdp
+FROM (
 SELECT 
   UPPER(TRIM(Instrument)) AS instrument,
   CAST(`Qty.` AS INT) AS qty,
@@ -15,8 +17,12 @@ SELECT
   when lower(Instrument) rlike "(etf|bees|mon100)" then "ETF"
   else "EQUITY"
   end as asset_class,
-  current_timestamp() AS silver_table_time_stamp
-FROM STREAM sdp_investment.bronze.holding_raw_sdp
+  current_timestamp() AS silver_table_time_stamp,
+  file_mod_time
+FROM STREAM(sdp_investment.bronze.holding_raw_sdp)
 WHERE Instrument is not null and cast(`Avg. cost` as decimal) is not null
 and cast(`Cur. val` as decimal) > 0 and cast(`Net chg.` as decimal) is not null
-and cast(Invested as decimal) > 0;
+and cast(Invested as decimal) > 0
+)
+KEYS (instrument)
+SEQUENCE BY file_mod_time;
