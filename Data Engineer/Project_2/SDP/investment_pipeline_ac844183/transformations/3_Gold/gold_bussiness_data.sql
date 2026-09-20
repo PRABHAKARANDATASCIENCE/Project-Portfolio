@@ -22,3 +22,12 @@ coalesce(d.dividend_payment,0) as dividend_payment
 from sdp_investment.silver.holding_silver_sdp h
 left join dividend_by_stock d
 on h.instrument=d.instrument;
+-- stock wise dividend income
+create or refresh materialized view sdp_investment.gold.gold_monthly_dividend
+as
+select date_trunc('year',ex_date) as year, date_trunc('month',ex_date) as month,
+sum(total_dividend) as total_dividend_income,
+count(*) as dividend_payment
+from sdp_investment.silver.dividend_silver_sdp
+group by date_trunc('year',ex_date),date_trunc('month',ex_date)
+order by date_trunc('year',ex_date),date_trunc('month',ex_date);
