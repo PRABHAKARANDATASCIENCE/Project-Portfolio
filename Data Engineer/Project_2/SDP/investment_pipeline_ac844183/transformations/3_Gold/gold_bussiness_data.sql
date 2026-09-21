@@ -30,4 +30,4 @@ sum(total_dividend) as total_dividend_income,
 count(*) as dividend_payment
 from sdp_investment.silver.dividend_silver_sdp
 group by date_trunc('year',ex_date),date_trunc('month',ex_date)
-order by date_trunc('year',ex_date),date_trunc('month',ex_date);
+order by date_trunc('month',ex_date);
