@@ -51,3 +51,32 @@ SELECT
   KEYS (dividend_id)
   SEQUENCE BY file_mod_time;
 
+  -- Silver transaction
+  CREATE OR REFRESH STREAMING TABLE sdp_investment.silver.transaction_silver_sdp;
+
+APPLY CHANGES INTO sdp_investment.silver.transaction_silver_sdp
+FROM (
+  SELECT
+  UPPER(TRIM(symbol)) as instrument,
+  UPPER(TRIM(isin)) as isin,
+  cast(trade_date as date) as trade_date,
+  upper(trim(exchange)) as exchange,
+  upper(trim(segment)) as segment,
+  upper(trim(series)) as series,
+  upper(trim(trade_type)) as trade_type,
+  cast(auction as boolean) as auction,
+  cast(quantity as int) as quantity,
+  cast(price as decimal(10,2)) as price,
+  cast(trade_id as long) as trade_id,
+  cast(order_id as long) as order_id,
+  cast(order_execution_time as timestamp) as order_execution_time,
+  cast(file_mod_time as timestamp) as bronze_time,
+  current_timestamp() AS silver_table_time_stamp,
+  file_mod_time
+  from STREAM(sdp_investment.bronze.transaction_raw_sdp)
+  where symbol is not null and isin is not null and trade_date is not null
+  and quantity is not null and price is not null and trade_id is not null
+  and order_id is not null and order_execution_time is not null
+)
+KEYS (trade_id)
+SEQUENCE BY file_mod_time;
