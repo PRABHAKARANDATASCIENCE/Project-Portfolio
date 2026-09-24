@@ -31,3 +31,11 @@ count(*) as dividend_payment
 from sdp_investment.silver.dividend_silver_sdp
 group by date_trunc('year',ex_date),date_trunc('month',ex_date)
 order by date_trunc('month',ex_date);
+-- transaction summary
+create or refresh materialized view sdp_investment.gold.gold_transaction_summary
+as
+select instrument,isin,trade_type,sum(quantity) as total_quantity,sum(price) as total_price,
+sum(quantity*price) as total_value,avg(price) as avg_price
+from sdp_investment.silver.transaction_silver_sdp
+group by instrument,isin,trade_type
+order by total_value desc;
