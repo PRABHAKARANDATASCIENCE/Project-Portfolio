@@ -24,3 +24,17 @@ FROM STREAM read_files(
   format => "csv",
   inferSchema => true
 );
+-- transaction data ingestion
+CREATE OR REFRESH STREAMING TABLE sdp_investment.bronze.transaction_raw_sdp
+TBLPROPERTIES(
+  'delta.columnMapping.mode' = 'name'
+)
+AS SELECT * ,
+   _metadata.file_name AS source_file,
+   _metadata.file_modification_time AS file_mod_time
+FROM STREAM read_files(
+  "/Volumes/sdp_investment/bronze/raw_transaction/",
+  format => "csv",
+  header => true,
+  inferSchema => true
+);
