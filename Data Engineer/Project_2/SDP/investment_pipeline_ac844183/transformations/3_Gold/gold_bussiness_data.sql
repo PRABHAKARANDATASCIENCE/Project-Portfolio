@@ -8,7 +8,7 @@ coalesce(round((sum(p_and_l)/nullif(sum(invested),0))*100,2),0) as total_unreali
 from sdp_investment.silver.holding_silver_sdp
 group by asset_class,instrument,qty
 order by total_unrealized_pnl desc;
--- dividend by stock
+-- dividend by stock and total return both dividend and holding value
 create or refresh materialized view sdp_investment.gold.gold_dividend_by_stock
 as 
 with dividend_by_stock as (
@@ -18,7 +18,8 @@ with dividend_by_stock as (
 )
 select h.instrument,h.qty,h.invested,h.cur_val,h.p_and_l,
 coalesce(d.total_dividend_income,0) as total_dividend_income,
-coalesce(d.dividend_payment,0) as dividend_payment
+coalesce(d.dividend_payment,0) as dividend_payment,
+h.cur_val+coalesce(d.total_dividend_income,0) as total_pnl
 from sdp_investment.silver.holding_silver_sdp h
 left join dividend_by_stock d
 on h.instrument=d.instrument;
@@ -39,3 +40,6 @@ sum(quantity*price) as total_value,avg(price) as avg_price
 from sdp_investment.silver.transaction_silver_sdp
 group by instrument,isin,trade_type
 order by total_value desc;
+-- 
+
+
