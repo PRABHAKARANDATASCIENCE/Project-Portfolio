@@ -23,7 +23,7 @@ h.cur_val+coalesce(d.total_dividend_income,0) as total_pnl
 from sdp_investment.silver.holding_silver_sdp h
 left join dividend_by_stock d
 on h.instrument=d.instrument;
--- stock wise dividend income
+-- monthly dividend income
 create or refresh materialized view sdp_investment.gold.gold_monthly_dividend
 as
 select date_trunc('year',ex_date) as year, date_trunc('month',ex_date) as month,
@@ -40,6 +40,12 @@ sum(quantity*price) as total_value,avg(price) as avg_price
 from sdp_investment.silver.transaction_silver_sdp
 group by instrument,isin,trade_type
 order by total_value desc;
--- 
-
+-- monthly investment
+create or refresh materialized view sdp_investment.gold.gold_monthly_investment
+as
+select year(trade_date) as year, date_format(trade_date,'MMM') as month,month(trade_date) as month_num,
+sum(quantity*price) as total_investment
+from sdp_investment.silver.transaction_silver_sdp
+group by year(trade_date),date_format(trade_date,'MMM'),month(trade_date)
+order by year(trade_date) asc,month(trade_date) asc;
 
