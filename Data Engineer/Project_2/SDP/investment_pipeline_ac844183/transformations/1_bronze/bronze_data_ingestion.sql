@@ -11,6 +11,19 @@ FROM STREAM read_files(
   header => true,
   inferSchema => true
 );
+-- mutual fund ingestion
+CREATE or REFRESH STREAMING TABLE sdp_investment.bronze.mutualfund_raw_sdp
+TBLPROPERTIES (
+  'delta.columnMapping.mode' = 'name'
+)
+AS SELECT *,
+  _metadata.file_name AS source_file,
+  _metadata.file_modification_time AS file_mod_time
+FROM STREAM read_files(
+  "/Volumes/sdp_investment/bronze/raw_mutual_fund_data",
+  format => "csv",
+  inferSchema => true
+);
 -- dividend ingestion
 CREATE OR REFRESH STREAMING TABLE sdp_investment.bronze.dividend_raw_sdp
 TBLPROPERTIES (
