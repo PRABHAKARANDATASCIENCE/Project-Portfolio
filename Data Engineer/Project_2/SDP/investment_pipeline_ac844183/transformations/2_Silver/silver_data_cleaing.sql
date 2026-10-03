@@ -26,6 +26,31 @@ and cast(Invested as decimal) > 0
 )
 KEYS (instrument)
 SEQUENCE BY file_mod_time;
+-- silver mutual fund
+CREATE or REFRESH STREAMING TABLE sdp_investment.silver.mutualfund_silver_sdp;
+
+APPLY CHANGES INTO sdp_investment.silver.mutualfund_silver_sdp
+FROM(
+  SELECT
+  upper(trim(Instrument)) AS instrument,
+  cast(`Qty.` AS INT) AS qty,
+  cast(`Avg. cost` AS DECIMAL(10,2)) AS avg_cost,
+  cast(LTP AS DECIMAL(10,2)) AS ltp,
+  cast(Invested AS DECIMAL(10,2)) AS invested,
+  cast(`Cur. val` AS DECIMAL(10)) AS cur_val,
+  cast(`P&L` AS DECIMAL(10,2)) AS p_and_l,
+  cast(`Net chg.` AS DECIMAL(10,2)) AS net_chg,
+  cast(`Day chg.` AS DECIMAL(10,2)) AS day_chg,
+  'MTF' AS asset_class,
+  current_timestamp() AS silver_table_time_stamp,
+  file_mod_time
+  FROM STREAM(sdp_investment.bronze.mutualfund_raw_sdp)
+  where instrument is not null and cast(`Avg. cost` as DECIMAL(10,2)) is not null
+  and cast(`Cur. val` as DECIMAL(10,2)) > 0 and cast(`Net chg.` as DECIMAL(10,2)) is not null
+  and cast(Invested as decimal) > 0
+)
+KEYS (instrument)
+SEQUENCE BY file_mod_time;
 -- silver dividend
 CREATE OR REFRESH STREAMING TABLE sdp_investment.silver.dividend_silver_sdp;
 
