@@ -8,6 +8,11 @@ coalesce(round((sum(p_and_l)/nullif(sum(invested),0))*100,2),0) as total_unreali
 from sdp_investment.silver.holding_silver_sdp
 group by asset_class,instrument,qty
 order by total_unrealized_pnl desc;
+-- appending both MTF holdings and STOCK holing in a single table
+create or refresh materialized view sdp_investment.gold.gold_porfolio_holdings_all
+as select * from sdp_investment.silver.holding_silver_sdp
+union all
+select * from sdp_investment.silver.mutualfund_silver_sdp;
 -- dividend by stock and total return both dividend and holding value
 create or refresh materialized view sdp_investment.gold.gold_dividend_by_stock
 as 
