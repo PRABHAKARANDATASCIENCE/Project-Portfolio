@@ -48,7 +48,7 @@ order by total_value desc;
 -- monthly investment
 create or refresh materialized view sdp_investment.gold.gold_monthly_investment
 as
-select year(trade_date) as year, date_format(trade_date,'MMM') as month,month(trade_date) as month_num,
+select year(trade_date) as year, date_format(trade_date,'MMM') as month,month(trade_date) as month_num,count(trade_id) as total_trade,
 sum(quantity*price) as total_investment
 from sdp_investment.silver.transaction_silver_sdp
 group by year(trade_date),date_format(trade_date,'MMM'),month(trade_date)
