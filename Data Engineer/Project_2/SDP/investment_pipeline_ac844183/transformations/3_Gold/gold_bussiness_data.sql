@@ -53,4 +53,11 @@ sum(quantity*price) as total_investment
 from sdp_investment.silver.transaction_silver_sdp
 group by year(trade_date),date_format(trade_date,'MMM'),month(trade_date)
 order by year(trade_date) asc,month(trade_date) asc;
-
+-- asset allocation
+create or refresh materialized view sdp_investment.gold.gold_asset_allocation as
+(
+select instrument,asset_class,qty,invested,cur_val,
+round((invested/sum(invested) over())*100,2) as invested_pct,
+round((cur_val/sum(cur_val) over())*100,2) as cur_val_pct
+from sdp_investment.gold.gold_porfolio_holdings_all
+order by cur_val_pct desc);
