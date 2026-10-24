@@ -14,7 +14,5 @@ def bronze_holdings():
         .option("header","true")
         .option("cloudFiles.inferColumnTypes", "true")
         .load("/Volumes/sdp_investment_pyspark/bronze/raw_holding_data/")
-        .withColumn("_source_file", 
-                    F.col("_metadata.file_path")
-        )
+        .withColumn("file_mod_time",F.col("_metadata.file_modification_time"))
     )
