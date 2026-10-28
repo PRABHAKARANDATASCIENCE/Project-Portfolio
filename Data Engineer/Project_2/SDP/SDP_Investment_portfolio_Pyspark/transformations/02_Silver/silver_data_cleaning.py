@@ -1,7 +1,7 @@
 from pyspark import pipelines as dp
 from pyspark.sql import functions as F
 @dp.table(
-    name="silver_holding",
+    name="sdp_investment_pyspark.silver.silver_holding",
     comment="Cleaned and validated investment holdings"
 )
 def silver_data_cleaning():
@@ -34,3 +34,11 @@ def silver_data_cleaning():
                       & (F.col("invested")> 0)
      )         
      dp.create_streaming_table("holding_silver_sdp")
+
+     dp.create_auto_cdc_flow(
+         target = "holding_silver_sdp",
+         source = "silver_data_cleaning",
+         keys = ["instrument"],
+         sequence_by = F.col("file_mod_time"),
+         stored_as_scd_type = 1
+     )
