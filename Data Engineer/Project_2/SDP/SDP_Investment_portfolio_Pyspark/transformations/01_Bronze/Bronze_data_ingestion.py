@@ -2,7 +2,7 @@ from pyspark import pipelines as dp
 from pyspark.sql import functions as F
 
 @dp.table(
-    name="bronze_holdings",
+    name="sdp_investment_pyspark.bronze.bronze_holdings",
     comment="Raw data from the source system",
     table_properties={"delta.columnMapping.mode": "name"}
 )
