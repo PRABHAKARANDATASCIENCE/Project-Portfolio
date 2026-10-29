@@ -5,3 +5,11 @@
 # ///
 # MAGIC %sql
 # MAGIC Create schema sdp_investment_pyspark.silver;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT * FROM sdp_investment_pyspark.silver.silver_holding;
+
+# COMMAND ----------
+

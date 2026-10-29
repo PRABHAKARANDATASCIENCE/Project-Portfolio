@@ -8,7 +8,7 @@ def silver_data_cleaning():
      
      df = (
          spark.readStream
-         .table("bronze_holdings")
+         .table("sdp_investment_pyspark.bronze.bronze_holdings")
          .select(
              F.upper(F.trim(F.col("Instrument"))).alias("instrument"),
              F.col("`Qty.`").cast("int").alias("qty"),
@@ -33,12 +33,13 @@ def silver_data_cleaning():
                       & F.col("net_chg").isNotNull()
                       & (F.col("invested")> 0)
      )         
-     dp.create_streaming_table("holding_silver_sdp")
+     
+dp.create_streaming_table("sdp_investment_pyspark.silver.holding_silver_sdp")
 
-     dp.create_auto_cdc_flow(
-         target = "holding_silver_sdp",
-         source = "silver_data_cleaning",
-         keys = ["instrument"],
-         sequence_by = F.col("file_mod_time"),
-         stored_as_scd_type = 1
-     )
+dp.create_auto_cdc_flow(
+    target = "sdp_investment_pyspark.silver.holding_silver_sdp",
+    source = "sdp_investment_pyspark.silver.silver_holding",
+    keys = ["instrument"],
+    sequence_by = F.col("file_mod_time"),
+    stored_as_scd_type = 1
+)
