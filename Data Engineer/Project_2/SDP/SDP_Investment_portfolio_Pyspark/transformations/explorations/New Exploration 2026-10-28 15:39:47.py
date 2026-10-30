@@ -9,7 +9,17 @@
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC select * from sdp_investment_pyspark.bronze.bronze_holdings;
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC SELECT * FROM sdp_investment_pyspark.silver.silver_holding;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from sdp_investment_pyspark.silver.holding_silver_sdp;
 
 # COMMAND ----------
 
