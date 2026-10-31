@@ -9,6 +9,11 @@
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC Create Schema sdp_investment_pyspark.gold
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC select * from sdp_investment_pyspark.bronze.bronze_holdings;
 
 # COMMAND ----------
